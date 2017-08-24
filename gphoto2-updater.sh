@@ -31,10 +31,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-latest_stable_version=2_5_10
-display_version=$(echo ${latest_stable_version} | tr '_' '.')
+latest_stable_libgphoto_version=2_5_14
+latest_stable_gphoto_version=2_5_14
+display_version=$(echo "libgphoto ${latest_stable_libgphoto_version}; gphoto ${latest_stable_gphoto_version}" | tr '_' '.')
 branch_libgphoto=''
 branch_gphoto=''
+cores=$(nproc)
 
 if [ "$(whoami)" != "root" ]; then
 	echo "Sorry, this script must be executed with sudo or as root"
@@ -68,8 +70,8 @@ do
     case "$1" in
         -h|--help)          usage;;
         -d|--development)   shift 1;;
-        -s|--stable)        branch_libgphoto="--branch libgphoto2-${latest_stable_version}-release"
-                            branch_gphoto="--branch gphoto2-${latest_stable_version}-release"
+        -s|--stable)        branch_libgphoto="--branch libgphoto2-${latest_stable_libgphoto_version}-release"
+                            branch_gphoto="--branch gphoto2-${latest_stable_gphoto_version}-release"
                             shift 1;;
         --)                 break ;;
     esac
@@ -96,8 +98,8 @@ do
 						echo
             echo "\"Install last stable release (${display_version})\" selected"
 						echo
-						branch_libgphoto="--branch libgphoto2-${latest_stable_version}-release"
-						branch_gphoto="--branch gphoto2-${latest_stable_version}-release"
+						branch_libgphoto="--branch libgphoto2-${latest_stable_libgphoto_version}-release"
+						branch_gphoto="--branch gphoto2-${latest_stable_gphoto_version}-release"
 						break
             ;;
         "Quit")
@@ -131,7 +133,7 @@ echo "Removing gphoto2 and libgphoto2 if exists"
 echo "-----------------------------------------"
 echo
 
-apt-get remove -y gphoto2 libgphoto2-port10
+apt-get remove -y gphoto2 libgphoto2*
 
 echo
 echo "-----------------------"
